@@ -3,11 +3,7 @@ import '/src/style.css'
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
+
 
 const scene  = new THREE.Scene();
 
@@ -16,7 +12,7 @@ camera.position.z = 18 ;
 camera.position.y = 2 ;
 camera.position.x = 0;
 
-let model;
+let model: THREE.Object3D | null = null;
 
 const loader = new GLTFLoader();
 loader.load('/batmobil_car.glb',(gltf)=>{
@@ -45,16 +41,7 @@ exrLoader.load('https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/1k/rogland_cle
   console.error(error);
 });
 
-// const light = new THREE.DirectionalLight(0xffffff,1);
-// light.position.set(0,1,1);
-// scene.add(light);
 
-// const geometry = new THREE.BoxGeometry();
-// const material = new THREE.MeshBasicMaterial({color:"red"});
-
-// const mesh = new THREE.Mesh(geometry,material);
-
-// scene.add(mesh);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('canvas') as HTMLCanvasElement,
@@ -67,25 +54,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.setSize(window.innerWidth,window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
-renderer.outputEncoding = THREE.sRGBEncoding;
 
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 pmremGenerator.compileEquirectangularShader();
 
 
-// const composer = new EffectComposer(renderer);
-// const renderPass = new RenderPass(scene, camera);
-// composer.addPass(renderPass);
-
-// const rgbShiftPass = new ShaderPass(RGBShiftShader);
-// rgbShiftPass.uniforms['amount'].value = 0.0030; // Adjust shift amount as needed
-// composer.addPass(rgbShiftPass);
 
 
 
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
-// controls.dampingFactor = 0.05;
+
+
+
+
 
 window.addEventListener("mousemove",(e)=>{
   if(model){
